@@ -14,11 +14,20 @@ namespace quadtree
 template<typename T, typename GetBox, typename Equal = std::equal_to<T>, typename Float = float>
 class Quadtree
 {
+    /*
     static_assert(std::is_convertible_v<std::invoke_result_t<GetBox, const T&>, Box<Float>>,
         "GetBox must be a callable of signature Box<Float>(const T&)");
     static_assert(std::is_convertible_v<std::invoke_result_t<Equal, const T&, const T&>, bool>,
         "Equal must be a callable of signature bool(const T&, const T&)");
     static_assert(std::is_arithmetic_v<Float>);
+
+    */
+
+    static_assert(std::is_convertible<std::result_of_t<GetBox( const T&)>, Box<Float>>::value,
+        "GetBox must be a callable of signature Box<Float>(const T&)");
+    static_assert(std::is_convertible<std::result_of_t<Equal( const T&, const T&)>, bool>::value,
+        "Equal must be a callable of signature bool(const T&, const T&)");
+    static_assert(std::is_arithmetic<Float>::value, "Equal must be a callable of signature Float");
 
 public:
     Quadtree(const Box<Float>& box, const GetBox& getBox = GetBox(),
